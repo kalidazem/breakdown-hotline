@@ -1,0 +1,26 @@
+{
+  "name": "khaled/breakdown-hotline",
+  "authors": [
+    {
+      "name": "kaldev-a",
+      "email": "kaled.alazem@gmail.com"
+    }
+  ],
+  "require-dev": {
+    "squizlabs/php_codesniffer": "3.*",
+    "automattic/vipwpcs": "^2.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "BreakdownHotline\\": "src/"
+    },
+    "files": [
+      "src/functions/functions.php"
+    ]
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  }
+}
