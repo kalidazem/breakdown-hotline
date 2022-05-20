@@ -16,8 +16,6 @@ defined('ABSPATH') || exit;
 if (!defined('PLUGIN_DIR')) {
     define('PLUGIN_DIR', __DIR__);
 }
-//require autoloader
-
 
 if (!defined('PLUGIN_UPDATE_CHECK_ENDPOINT')) {
     define(
@@ -84,15 +82,15 @@ function fetch_data()
         return null;
     }
 
-    $remote_data = json_decode($remote_data['data']);
+    $remote_data = json_decode($remote_data['body']);
 
 
     return (object)[
         'id'            => 'breakdown-hotline/breakdown-hotline.php',
-        'slug'          => 'our-plugin',
+        'slug'          => 'breakdown-hotline',
         'plugin'        => 'breakdown-hotline/breakdown-hotline.php',
         'new_version'   => $remote_data->version,  // <-- Important!
-        'url'           => '', //TODO: add url
+        'url'           => 'https://breakdownhotline.co.uk', //TODO: add url
         'package'       => $remote_data->package,  // <-- Important!
         'icons'         => [],
         'banners'       => [],
@@ -104,7 +102,7 @@ function fetch_data()
 }
 
 
-require_once ABSPATH . 'wp_admin/includes/plugin.php';
+require_once ABSPATH . 'wp-admin/includes/plugin.php';
 
 
 add_filter('site_transient_update_plugins', 'breakdown_hotline_site_transient_update_plugins');
