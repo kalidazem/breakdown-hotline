@@ -23,8 +23,8 @@ final class Init
     public static function load_dependencies()
     {
         $real_path = realpath(dirname(__FILE__));
-        require($real_path . '/ultimate-member-extend/init.php');
-        require($real_path . '/core/init.php');
+        require_once($real_path . '/ultimate-member-extend/init.php');
+        require_once($real_path . '/core/init.php');
     }
 
     public static function get_instance(): self
