@@ -2,13 +2,12 @@
 
 namespace BreakdownHotline;
 
-use BreakdownHotline\Controllers\Ultimate_Member_Extend_Controller;
+defined('ABSPATH') || exit;
 
 // if (!class_exists('Init')) :
 final class Init
 {
     private static $instance = null;
-    // private static $services = 
     private function __construct()
     {
     }
@@ -21,23 +20,11 @@ final class Init
         ];
     }
 
-    public static function register_controllers()
+    public static function load_dependencies()
     {
-        $controllers = self::get_controllers();
-
-        foreach ($controllers as $controller_class) {
-            $controller = self::init($controller_class);
-
-            if (method_exists($controller, 'register')) {
-                $controller->register();
-            }
-        }
-    }
-
-    private static function init($class)
-    {
-        $controller_class =  $class::get_instance();
-        return $controller_class;
+        $real_path = realpath(dirname(__FILE__));
+        require($real_path . '/ultimate-member-extend/init.php');
+        require($real_path . '/core/init.php');
     }
 
     public static function get_instance(): self
@@ -48,5 +35,3 @@ final class Init
         return self::$instance;
     }
 }
-
-// endif;

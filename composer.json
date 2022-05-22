@@ -13,10 +13,7 @@
   "autoload": {
     "psr-4": {
       "BreakdownHotline\\": "src/"
-    },
-    "files": [
-      "src/functions/functions.php"
-    ]
+    }
   },
   "config": {
     "allow-plugins": {
