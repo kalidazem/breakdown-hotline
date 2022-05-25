@@ -1,6 +1,6 @@
 <?php
 
-namespace BreakdownHotline\UltimateMember;
+// namespace BreakdownHotline\UltimateMember;
 // The reason for using the functions below is that the Ultimate Member plugin uses function_exists
 // to check fo custom call_backs
 
@@ -9,6 +9,7 @@ defined('ABSPATH') || exit;
 
 /**
  * TODO write borough into their own json file as current file is quite large.
+ * TODO: change return type
  * @return void
  */
 function get_boroughs()
@@ -22,20 +23,22 @@ function get_boroughs()
     );
 
     $boroughs = [];
-    $helper = null;
+    $borough = null;
     foreach ($json_iterator as $key => $value) {
         if (!is_array($value)) {
-            //get borough code 
-            if ($key === "HASC_2") {
-                $helper = $value;
+            //get borough name
+            if (is_null($borough) && $key === "NAME_2") {
+                //borough name
+                $borough = $value;
             }
 
-            if (!is_null($helper) && $key === "NAME_2") {
-                $boroughs[$helper] = $value;
-                $helper = null;
+            //get borough code 
+            if (!is_null($borough) && $key === "HASC_2") {
+                $boroughs[$value] = $borough;
+                $borough = null;
             }
-            //get borough name 
         }
     }
+
     return $boroughs;
 }
