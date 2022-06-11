@@ -3,3 +3,13 @@
 extend/
 notez.md
 README.md
+/src/core
+.phpunit.result.cache
+setup-tests.sh
+/bin
+.travis.yml
+/src/WordpressAPI
+/src/Update
+/src/Services/
+/src/Update
+breakdown-hotline.php

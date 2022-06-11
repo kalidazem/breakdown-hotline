@@ -2,9 +2,12 @@
 
 namespace BreakdownHotline;
 
+use BreakdownHotline\UltimateMemberExtend\UltimateMemberExtend;
+use BreakdownHotline\Update\Update;
+
 defined('ABSPATH') || exit;
 
-// if (!class_exists('Init')) :
+
 final class Init
 {
     private static $instance = null;
@@ -12,19 +15,19 @@ final class Init
     {
     }
 
-    private static function get_controllers()
-    {
-        return [
-            Ultimate_Member_Extend_Controller::class,
-
-        ];
-    }
-
+    /**
+     * Loads required dependencies for plugin to function
+     *
+     * @return void
+     */
     public static function load_dependencies()
     {
+
         $real_path = realpath(dirname(__FILE__));
-        require_once($real_path . '/ultimate-member-extend/init.php');
-        require_once($real_path . '/core/init.php');
+        require_once($real_path . '/UltimateMemberExtend/callbacks.php');
+        // require_once($real_path . '/core/init.php');
+        UltimateMemberExtend::getInstance();
+        Update::getInstance();
     }
 
     public static function get_instance(): self
