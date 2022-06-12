@@ -10,13 +10,23 @@
 
 namespace BreakdownHotline\UltimateMemberExtend;
 
+use BreakdownHotline\API\PostcodesAPI;
+
 class UltimateMemberExtend
 {
 
     private static $instance = null;
 
-    private  function __construct()
+    /**
+     * Postcodes API
+     *
+     * @var PostcodesAPI
+     */
+    private $postcodes_api_client;
+
+    public function __construct(PostcodesAPI $postcodes_api_client)
     {
+        $this->postcodes_api_client = $postcodes_api_client;
         $this->setupFilters();
         $this->setupActions();
     }
@@ -36,20 +46,20 @@ class UltimateMemberExtend
     {
         add_filter(
             'um_prepare_user_query_args',
-            [$this, 'umPrepareUserLookupCustomQuery'],
+            [$this, 'um_prepare_user_lookup_custom_query'],
             99,
             2
         );
     }
 
-    public static function getInstance()
-    {
-        if (is_null(self::$instance)) {
-            self::$instance = new self();
-        }
+    // public static function getInstance()
+    // {
+    //     if (is_null(self::$instance)) {
+    //         self::$instance = new self();
+    //     }
 
-        return self::$instance;
-    }
+    //     return self::$instance;
+    // }
 
 
     /**
@@ -76,8 +86,8 @@ class UltimateMemberExtend
      * @since 1.0.1
      * @return array
      */
-    function umPrepareUserLookupCustomQuery($queryArgs, $args): array
-    {
+    public function um_prepare_user_lookup_custom_query($queryArgs, $args): array
+        {
         if (!$_POST['search']) {
             return $queryArgs;
         }
@@ -86,20 +96,20 @@ class UltimateMemberExtend
 
         //Don't proceed
         //Probably is not a postcode-based search
-        if (!$this->isPostcodeValid($postcode)) {
+        if (!$this->postcodes_api_client->is_valid_postcode($postcode)) {
             return $queryArgs;
         }
 
-        $boroughName = $this->getBoroughNameByPostcode($postcode);
+        $boroughName = $this->postcodes_api_client->get_borough_name_by_postcode($postcode);
 
         $listOfBoroughs = $this->getBorough();
 
         // ["GB.HU" => "Hounslow"] the index is the borough code.
-        $boroughCode = $this->getBoroughCodeByName($listOfBoroughs, $boroughName);
+        $boroughCode = $this->get_borough_code_by_name($listOfBoroughs, $boroughName);
 
         //TODO: form_id shouldn't be hard-coded 
         if ($args["form_id"] == "285") {
-            $queryArgs = $this->addBoroughCodeToSearchQuery($boroughCode, $queryArgs);
+            $queryArgs = $this->add_borough_to_search_query($boroughCode, $queryArgs);
         }
         return $queryArgs;
     }
@@ -113,7 +123,7 @@ class UltimateMemberExtend
      * @since 1.0.1
      * @return array
      */
-    function addBoroughCodeToSearchQuery(string $boroughCode, array $queryArgs): array
+    function add_borough_to_search_query(string $boroughCode, array $queryArgs): array
     {
         $queryArgs['meta_query'] = array(
             "relation" => "OR",
@@ -146,7 +156,7 @@ class UltimateMemberExtend
      * @return string
      *       
      */
-    function getBoroughCodeByName(array $listOfBoroughs, string $boroughName): string
+    function get_borough_code_by_name(array $listOfBoroughs, string $boroughName): string
     {
         $boroughDetails = array_filter(
             $listOfBoroughs,
@@ -171,6 +181,7 @@ class UltimateMemberExtend
      *
      * @param string $postcode
      * @return boolean
+     * @deprecated 1.0.0
      */
     public function isPostcodeValid($postcode): bool
     {
@@ -207,8 +218,10 @@ class UltimateMemberExtend
      *    
      *     - country: value, ---> not important 
      * - }
+     * @deprecated 1.0.0
      * @param string $postcode
      * @return string|null  
+     * @since 1.0.0
      */
     function getBoroughNameByPostcode(string $postcode)
     {
