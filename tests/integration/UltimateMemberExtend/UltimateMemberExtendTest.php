@@ -16,7 +16,6 @@ class UltimateMemberExtendTest extends TestCase
 
         //mock query args, it does not matter what um has added to $query_args
         //we are only concerned with the $query_args['meta_query']
-
         $query_args = [];
         $query_args = $ultimate_member_extend->um_prepare_user_lookup_custom_query(
             $query_args,

@@ -2,8 +2,8 @@
 
 namespace BreakdownHotline;
 
-use BreakdownHotline\API\PostcodesAPI;
-use BreakdownHotline\UltimateMemberExtend\UltimateMemberExtend;
+use BreakdownHotline\DependencyInjection\Container;
+use BreakdownHotline\ServiceProvider;
 use BreakdownHotline\Update\Update;
 
 defined('ABSPATH') || exit;
@@ -11,9 +11,33 @@ defined('ABSPATH') || exit;
 
 final class Init
 {
+    /**
+     * Instance of this class
+     *
+     * @var self
+     * @deprecated 1.0.0
+     */
     private static $instance = null;
-    private function __construct()
+
+    /**
+     *
+     * @var boolean
+     */
+    private $loaded;
+
+    /**
+     * Dependency injection container
+     *
+     * @var Container
+     * @since 1.0.1
+     */
+    private $container;
+
+
+    public function __construct()
     {
+        $this->container = new Container();
+        $this->loaded = false;
     }
 
     /**
@@ -21,27 +45,34 @@ final class Init
      *
      * @return void
      */
-    public static function load_dependencies()
+    public function load_dependencies()
     {
-
+        if ($this->loaded) {
+            return;
+        }
         $real_path = realpath(dirname(__FILE__));
         require_once($real_path . '/UltimateMemberExtend/callbacks.php');
 
-        //TODO: make dependency injection automatic
-        /**
-         * UltimateMemberExtend instantiation with its dependencies 
-         */
-        $http_transport = new \WP_Http();
-        $postcodes_client_api = new PostcodesAPI($http_transport);
-        new UltimateMemberExtend($postcodes_client_api);
+        $this->container->configure([
+            ServiceProvider\PostcodesAPIServiceProvider::class,
+            ServiceProvider\WordpressServiceProvider::class,
+            ServiceProvider\UltimateMemberExtendServiceProvider::class,
+        ]);
 
 
         /**
          * Update instantiation with its dependencies 
          */
         Update::getInstance();
+        $this->loaded = true;
     }
 
+    /**
+     * Get instance of this class
+     *
+     * @return self
+     * @deprecated 1.0.0
+     */
     public static function get_instance(): self
     {
         if (is_null(self::$instance)) {

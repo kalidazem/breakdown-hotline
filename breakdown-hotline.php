@@ -51,7 +51,6 @@ $current_plugin_data = get_plugin_data(__FILE__);
 define('BREAKDOWN_PLUGIN_VERSION', $current_plugin_data['Version']);
 
 
-if (class_exists(Init::class)) {
-    $breakdown_hotline = Init::get_instance();
-    $breakdown_hotline->load_dependencies();
-}
+global $breakdown_hotline;
+$breakdown_hotline = new BreakdownHotline\Init();
+add_action('after_setup_theme', array($breakdown_hotline, 'load_dependencies'));

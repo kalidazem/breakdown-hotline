@@ -15,6 +15,11 @@ use BreakdownHotline\API\PostcodesAPI;
 class UltimateMemberExtend
 {
 
+    /**
+     * Instance of this class   
+     *
+     * @var self
+     */
     private static $instance = null;
 
     /**
@@ -87,7 +92,7 @@ class UltimateMemberExtend
      * @return array
      */
     public function um_prepare_user_lookup_custom_query($queryArgs, $args): array
-        {
+    {
         if (!$_POST['search']) {
             return $queryArgs;
         }

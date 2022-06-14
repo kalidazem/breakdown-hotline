@@ -6,7 +6,7 @@
 
 namespace BreakdownHotline\Helpers;
 
-// defined('ABSPATH') || exit;
+ defined('ABSPATH') || exit;
 
 
 /**
