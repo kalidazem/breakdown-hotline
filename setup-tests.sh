@@ -1,1 +1,0 @@
-bin/install-wp-tests.sh  wordpress_test root root localhost:/home/khaled/.config/Local/run/AgoNjIp9A/mysql/mysqld.sock latest
