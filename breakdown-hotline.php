@@ -4,7 +4,7 @@
  * Plugin Name: Breakdown Hotline
  * Plugin URI: http://breakdownhotline.co.uk
  * Description: Manage your drivers 
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: Breakdown Hotline
  * Author URI: http://breakdownhotline.co.uk
  * Text Domain: breakdown-hotline

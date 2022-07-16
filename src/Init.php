@@ -63,6 +63,7 @@ final class Init
         /**
          * Update instantiation with its dependencies 
          */
+        //TODO: stupidly I added it to gitignore but still called it
         Update::getInstance();
         $this->loaded = true;
     }
